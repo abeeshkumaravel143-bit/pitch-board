@@ -6,13 +6,13 @@ const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 // GET /api/pitches?sector=fintech&stage=seed&q=ai
 exports.getPitches = async (req, res, next) => {
   try {
-    const { sector, stage, q } = req.query;
+    const { sector, stage, q, mine } = req.query;
     const filter = {};
 
     if (sector) filter.sector = new RegExp(escapeRegex(sector), 'i');
     if (stage) filter.stage = stage;
     if (q) filter.title = new RegExp(escapeRegex(q), 'i');
-    const Interest = require('../models/Interest');
+    if (mine === 'true') filter.founder = req.user._id;
 
     const pitches = await Pitch.find(filter)
       .populate('founder', 'name')
