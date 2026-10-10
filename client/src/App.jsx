@@ -4,6 +4,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Pitches from './pages/Pitches';
+import PitchDetail from './pages/PitchDetail';
 
 export default function App() {
   return (

@@ -8,7 +8,7 @@ exports.getPitches = async (req, res, next) => {
     const { sector, stage, q } = req.query;
     const filter = {};
 
-    if (sector) filter.sector = new RegExp(`^${escapeRegex(sector)}$`, 'i');
+    if (sector) filter.sector = new RegExp(escapeRegex(sector), 'i');
     if (stage) filter.stage = stage;
     if (q) filter.title = new RegExp(escapeRegex(q), 'i');
 
