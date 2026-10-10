@@ -1,3 +1,4 @@
+const { expressInterest } = require('../controllers/interestController');
 const express = require('express');
 const {
   getPitches, getPitch, createPitch, updatePitch, deletePitch,
@@ -12,4 +13,5 @@ router.post('/', protect, authorize('founder'), createPitch);
 router.put('/:id', protect, authorize('founder'), updatePitch);
 router.delete('/:id', protect, authorize('founder'), deletePitch);
 
+router.post('/:id/interest', protect, authorize('investor'), expressInterest);
 module.exports = router;
