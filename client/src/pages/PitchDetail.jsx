@@ -1,11 +1,12 @@
 ﻿import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../api/api';
 import { useAuth } from '../context/AuthContext';
 
 export default function PitchDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [pitch, setPitch] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -36,8 +37,21 @@ export default function PitchDetail() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!window.confirm('Delete this pitch? This cannot be undone.')) return;
+    try {
+      await api.delete(`/pitches/${id}`);
+      navigate('/');
+    } catch (err) {
+      setStatus({ type: 'error', text: err.response?.data?.message || 'Could not delete pitch' });
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
+
+  // Check if current user is the founder who owns this pitch
+  const isOwner = user?.role === 'founder' && pitch?.founder?._id === user?.id;
 
   return (
     <div>
@@ -51,10 +65,19 @@ export default function PitchDetail() {
           {pitch.sector} · by {pitch.founder?.name || 'Unknown'}
         </p>
         <p>{pitch.description}</p>
-        <strong>Funding ask: {pitch.fundingAsk.toLocaleString()}</strong>
+        <strong>Funding ask: ₹{(pitch.fundingAsk || 0).toLocaleString()}</strong>
+
+        {/* Ownership action control block */}
+        {isOwner && (
+          <div className="actions" style={{ marginTop: '16px', display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <Link to={`/pitches/${id}/edit`} className="btn-link">Edit</Link>
+            <button className="danger" onClick={handleDelete}>Delete</button>
+          </div>
+        )}
+        {status.text && !sending && user?.role === 'founder' && <p className={status.type}>{status.text}</p>}
       </div>
 
-      {user.role === 'investor' && (
+      {user?.role === 'investor' && (
         <div className="card">
           <h3>Express interest</h3>
           {status.text && <p className={status.type}>{status.text}</p>}

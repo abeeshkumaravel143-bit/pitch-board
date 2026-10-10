@@ -16,6 +16,8 @@ export default function Navbar() {
       <div className="nav-right">
         {user ? (
           <>
+            <Link to="/dashboard">Dashboard</Link>
+            {user.role === 'founder' && <Link to="/pitches/new">New Pitch</Link>}
             <span>{user.name} ({user.role})</span>
             <button onClick={handleLogout}>Logout</button>
           </>

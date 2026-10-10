@@ -13,9 +13,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
  });
 
-// 2. Connect Authentication Routes (Must be added here)
+// 2. Connect Authentication Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/pitches', require('./routes/pitchRoutes'));
+app.use('/api/interests', require('./routes/interestRoutes')); // <-- MAKE SURE THIS LINE IS NOT MISSING OR TYPO'D!
 
 // 3. Central error handler (Must stay at the very bottom of your routes)
 app.use((err, req, res, next) => {

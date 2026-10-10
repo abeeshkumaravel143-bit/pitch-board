@@ -20,3 +20,6 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 .muted { color: #666; font-size: 14px; }
 .success { color: #1e7e34; background: #e6f4ea; padding: 8px; border-radius: 4px; }
 @media (max-width: 600px) { .filters { grid-template-columns: 1fr; } }
+.actions { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+.btn-link { background: #2f6fd6; color: #fff !important; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 14px; margin-left: 0; }
+button.danger { background: #c0392b; }

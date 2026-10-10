@@ -1,4 +1,5 @@
 const Pitch = require('../models/Pitch');
+const Interest = require('../models/Interest');
 
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -11,6 +12,7 @@ exports.getPitches = async (req, res, next) => {
     if (sector) filter.sector = new RegExp(escapeRegex(sector), 'i');
     if (stage) filter.stage = stage;
     if (q) filter.title = new RegExp(escapeRegex(q), 'i');
+    const Interest = require('../models/Interest');
 
     const pitches = await Pitch.find(filter)
       .populate('founder', 'name')
@@ -83,6 +85,7 @@ exports.deletePitch = async (req, res, next) => {
       return res.status(403).json({ message: 'You can only delete your own pitches' });
     }
 
+    await Interest.deleteMany({ pitch: pitch._id });
     await pitch.deleteOne();
     res.json({ message: 'Pitch deleted' });
   } catch (err) {
