@@ -16,7 +16,6 @@ app.get('/api/health', (req, res) => {
 // 2. Connect Authentication Routes (Must be added here)
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/pitches', require('./routes/pitchRoutes'));
-app.use('/api/interests', require('./routes/interestRoutes'));
 
 // 3. Central error handler (Must stay at the very bottom of your routes)
 app.use((err, req, res, next) => {
